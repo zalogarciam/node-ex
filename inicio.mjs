@@ -1,4 +1,4 @@
-import { add, substract, secret } from "./funciones";
+import { add, substract, secret } from "./funciones.mjs";
 
 console.log("Hello");
 
