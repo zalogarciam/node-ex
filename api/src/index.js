@@ -96,18 +96,37 @@ server
 
 server.route("/buscar-productos").get((req, res) => {
   console.log(req.query);
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
   let resultado = [];
 
   if (req.query.nombre) {
-    resultado = products.filter((producto) => {
-      return producto.nombre === req.query.nombre;
-    });
+    resultado = [
+      ...resultado,
+      ...products.filter((producto) => {
+        // si en la posicion que estamos en el arreglo retorna true entonces se agregara ese elemento al nuevo arreglo
+        return producto.nombre === req.query.nombre;
+      }),
+    ];
   }
 
+  // Para que sea la busqueda de un inicio de una palabra mediante expresiones regulares
   if (req.query.patron) {
-    resultado = products.filter((producto) => {
-      return new RegExp(`(${req.query.patron})\w*`).test(producto.nombre);
-    });
+    resultado = [
+      ...resultado,
+      ...products.filter((producto) => {
+        // podemos utilizar expresiones regulares para hacer busqueda de patrones
+        return new RegExp(`${req.query.patron}\w*`).test(producto.nombre);
+      }),
+    ];
+  }
+
+  if (req.query.disponible) {
+    resultado = [
+      ...resultado,
+      ...products.filter((producto) => {
+        return String(producto.disponible) === req.query.disponible;
+      }),
+    ];
   }
   res.status(200).json({
     content: resultado,
