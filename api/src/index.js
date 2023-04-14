@@ -2,6 +2,8 @@ import express from "express";
 
 const server = express();
 
+server.use(express.json(), express.urlencoded())
+
 const products = [
   {
     nombre: "Martillo",
@@ -21,6 +23,19 @@ const products = [
 ];
 
 const PORT = 3000;
+
+server.get("/productos", (req, res) => {
+  res.status(200).json({
+    content: products,
+  });
+});
+
+server.post("/productos", (req, res) => {
+  console.log(req.body);
+  res.status(201).json({
+    message: "Product was added",
+  });
+});
 
 server.listen(PORT, () => {
   console.log(`Server running in port ${PORT}`);
