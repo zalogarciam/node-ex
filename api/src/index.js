@@ -64,7 +64,7 @@ server
 
     const result = products[id];
 
-    if (!resultado) {
+    if (!result) {
       res.status(404).json({
         message: "Producto no existe",
       });
@@ -73,6 +73,23 @@ server
     products[id] = body;
     res.status(201).json({
       message: "Actualizado",
+      content: products[id],
+    });
+  })
+  .patch((req, res) => {})
+  .delete((req, res) => {
+    const { id } = req.params;
+    const resultado = products[id];
+
+    if (!resultado) {
+      res.status(404).json({
+        message: "Producto no existe",
+      });
+    }
+
+    products.splice(id, 1);
+    res.status(201).json({
+      message: "Eliminado",
       content: products[id],
     });
   });
