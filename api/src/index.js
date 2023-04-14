@@ -94,6 +94,19 @@ server
     });
   });
 
+server.route("/buscar-productos").get((req, res) => {
+  console.log(req.query);
+  let result;
+  if (req.query.nombre) {
+    result = products.filter((product) => {
+      return product.nombre === req.query.nombre;
+    });
+  }
+  res.status(200).json({
+    content: result,
+  });
+});
+
 server.listen(PORT, () => {
   console.log(`Server running in port ${PORT}`);
 });
