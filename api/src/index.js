@@ -96,14 +96,21 @@ server
 
 server.route("/buscar-productos").get((req, res) => {
   console.log(req.query);
-  let result;
+  let resultado = [];
+
   if (req.query.nombre) {
-    result = products.filter((product) => {
-      return product.nombre === req.query.nombre;
+    resultado = products.filter((producto) => {
+      return producto.nombre === req.query.nombre;
+    });
+  }
+
+  if (req.query.patron) {
+    resultado = products.filter((producto) => {
+      return new RegExp(`(${req.query.patron})\w*`).test(producto.nombre);
     });
   }
   res.status(200).json({
-    content: result,
+    content: resultado,
   });
 });
 
