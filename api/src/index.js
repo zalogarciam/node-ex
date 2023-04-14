@@ -43,19 +43,39 @@ server
     });
   });
 
-server.route("/producto/:id").get((req, res) => {
-  const { id } = req.params;
-  const resultado = products[id];
-  if (resultado) {
-    res.status(200).json({
-      content: resultado,
+server
+  .route("/producto/:id")
+  .get((req, res) => {
+    const { id } = req.params;
+    const resultado = products[id];
+    if (resultado) {
+      res.status(200).json({
+        content: resultado,
+      });
+    } else {
+      res.status(404).json({
+        content: "No existe",
+      });
+    }
+  })
+  .put((req, res) => {
+    const { id } = req.params;
+    const body = req.body;
+
+    const result = products[id];
+
+    if (!resultado) {
+      res.status(404).json({
+        message: "Producto no existe",
+      });
+    }
+
+    products[id] = body;
+    res.status(201).json({
+      message: "Actualizado",
+      content: products[id],
     });
-  } else {
-    res.status(404).json({
-      content: "No existe",
-    });
-  }
-});
+  });
 
 server.listen(PORT, () => {
   console.log(`Server running in port ${PORT}`);
