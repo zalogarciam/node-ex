@@ -11,9 +11,23 @@ datasource db {
 }
 
 model Categoria {
-  id             Int     @id @default(autoincrement())
+  id             Int        @id @default(autoincrement())
   nombre         String
   descripcion    String?
-  disponibilidad Boolean @default(true)
+  disponibilidad Boolean    @default(true)
+  productos      Producto[]
+
   @@map("categorias")
+}
+
+model Producto {
+  id               Int      @id @default(autoincrement())
+  nombre           String
+  precio           Float
+  fechaVencimiento DateTime @map("fecja_ vencimiento")
+  categoriaId      Int      @map("categoria_id")
+
+  categoria Categoria @relation(fields: [categoriaId], references: [id])
+
+  @@map("productos")
 }
