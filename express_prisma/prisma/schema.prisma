@@ -9,3 +9,11 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Categoria {
+  id             Int     @id @default(autoincrement())
+  nombre         String
+  descripcion    String?
+  disponibilidad Boolean @default(true)
+  @@map("categorias")
+}
