@@ -16,12 +16,18 @@ export const crearProducto = async (req, res) => {
     });
   }
 
-  const resultado = await Prisma.producto.create({
-    data: { ...data, fechaVencimiento: new Date(data.fechaVencimiento) },
-  });
-
-  res.status(201).json({
-    message: "El producto se creo exitosamente",
-    content: resultado,
-  });
+  try {
+    const resultado = await Prisma.producto.create({
+      data: { ...data, fechaVencimiento: new Date(data.fechaVencimiento) },
+    });
+    res.status(201).json({
+      message: "El producto se creo exitosamente",
+      content: resultado,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Error al crear",
+      error: error.message,
+    });
+  }
 };
