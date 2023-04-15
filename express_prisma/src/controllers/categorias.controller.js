@@ -30,6 +30,15 @@ export const devolverCategoria = async (req, res) => {
     where: {
       id: parseInt(id),
     },
+    include: {
+      // productos: true,
+      productos: {
+        select: {
+          id: true,
+          nombre: true,
+        },
+      },
+    },
   });
 
   if (!categoria) {

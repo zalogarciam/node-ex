@@ -29,5 +29,6 @@ model Producto {
 
   categoria Categoria @relation(fields: [categoriaId], references: [id])
 
+  @@unique([nombre, precio, categoriaId])
   @@map("productos")
 }
