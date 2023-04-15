@@ -33,12 +33,12 @@ export const devolverCategoria = async (req, res) => {
   });
 
   if (!categoria) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "La categoria no existe",
     });
+  } else {
+    return res.status(200).json({
+      content: categoria,
+    });
   }
-
-  res.status(200).json({
-    content: categoria,
-  });
 };
