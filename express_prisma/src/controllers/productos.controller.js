@@ -31,3 +31,24 @@ export const crearProducto = async (req, res) => {
     });
   }
 };
+
+export const listarProductos = async (req, res) => {};
+
+export const devolverProducto = async (req, res) => {
+  const { id } = req.params;
+
+  const productoEncontrado = await Prisma.producto.findFirst({
+    where: { id: +id },
+    include: { categoria: true },
+  });
+
+  if (!productoEncontrado) {
+    return res.status(400).json({
+      message: "Producto no existe",
+    });
+  }
+
+  return res.json({
+    content: productoEncontrado,
+  });
+};
