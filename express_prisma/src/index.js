@@ -1,25 +1,13 @@
 import express from "express";
-import prisma from "@prisma/client";
+import { categoriaRouter } from "./routes/categorias.routes.js";
 
-const Prisma = new prisma.PrismaClient();
-
-const server = express();
-server.use(express.json());
+const servidor = express();
+servidor.use(express.json());
 
 const PORT = 3000;
 
-server.route("/categoria").post(async (req, res) => {
-  const body = req.body;
+servidor.use(categoriaRouter);
 
-  const result = await Prisma.categoria.create({
-    data: body,
-  });
-  console.log(result);
-  res.status(201).json({
-    message: "Categoria creada",
-  });
-});
-
-server.listen(PORT, () => {
-  console.log(`Server running ... at ${PORT}`);
+servidor.listen(PORT, () => {
+  console.log(`Servidor corriendo exitosamente en el puerto ${PORT}`);
 });
