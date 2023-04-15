@@ -77,14 +77,29 @@ export const actualizarCategoria = async (req, res) => {
 export const eliminarCategoria = async (req, res) => {
   const { id } = req.params;
 
-  const categoriaEliminada = await Prisma.categoria.delete({
+  const categoria = await Prisma.categoria.findFirst({
     where: {
       id: +id,
     },
+    select: {
+      id: true,
+    },
   });
 
-  return res.status(200).json({
-    message: "Categoria eliminada",
-    content: categoriaEliminada,
-  });
+  if (!categoria) {
+    return res.status(400).json({
+      message: "La categoria no existe",
+    });
+  } else {
+    const categoriaEliminada = await Prisma.categoria.delete({
+      where: {
+        id: +id,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Categoria eliminada",
+      content: categoriaEliminada,
+    });
+  }
 };
