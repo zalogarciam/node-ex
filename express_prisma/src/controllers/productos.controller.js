@@ -52,3 +52,5 @@ export const devolverProducto = async (req, res) => {
     content: productoEncontrado,
   });
 };
+
+export const actualizarProducto = async (req, res) => {};
