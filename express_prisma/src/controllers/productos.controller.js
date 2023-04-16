@@ -7,12 +7,18 @@ export const crearProducto = async (req, res) => {
 
   const categoria = await Prisma.categoria.findFirst({
     where: { id: data.categoriaId },
-    select: { id: true },
+    select: { id: true, disponibilidad: true },
   });
 
   if (!categoria) {
     return res.status(400).json({
       message: "Categoria no existe",
+    });
+  }
+
+  if (!categoria.disponibilidad) {
+    return res.status(400).json({
+      message: "Categoria esta deshabilitada",
     });
   }
 
@@ -32,7 +38,13 @@ export const crearProducto = async (req, res) => {
   }
 };
 
-export const listarProductos = async (req, res) => {};
+export const listarProductos = async (req, res) => {
+  const productos = await Prisma.producto.findMany();
+
+  res.json({
+    content: productos,
+  });
+};
 
 export const devolverProducto = async (req, res) => {
   const { id } = req.params;
@@ -53,4 +65,33 @@ export const devolverProducto = async (req, res) => {
   });
 };
 
-export const actualizarProducto = async (req, res) => {};
+export const actualizarProducto = async (req, res) => {
+  const data = req.body;
+  const { id } = req.params;
+
+  const producto = await Prisma.producto.findFirst({
+    where: {
+      id: +id,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!producto) {
+    return res.status(400).json({
+      message: "El producto no existe",
+    });
+  } else {
+    const change = await Prisma.producto.update({
+      where: {
+        id: producto.id,
+      },
+      data: data,
+    });
+    return res.status(200).json({
+      message: "Producto actualizado",
+      content: change,
+    });
+  }
+};

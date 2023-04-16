@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  actualizarProducto,
   crearProducto,
   devolverProducto,
   listarProductos,
@@ -8,4 +9,4 @@ import {
 export const productoRouter = Router();
 
 productoRouter.route("/productos").post(crearProducto).get(listarProductos);
-productoRouter.route("/producto/:id").get(devolverProducto);
+productoRouter.route("/producto/:id").get(devolverProducto).put(actualizarProducto);

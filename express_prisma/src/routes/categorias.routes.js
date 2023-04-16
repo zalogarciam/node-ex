@@ -9,7 +9,7 @@ import {
 
 export const categoriaRouter = Router();
 
-categoriaRouter.route("/categorias").post(crearCategoria).get(listarCategoria);
+categoriaRouter.route("/categorias/").post(crearCategoria).get(listarCategoria);
 categoriaRouter
   .route("/categoria/:id")
   .get(devolverCategoria)
