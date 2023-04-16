@@ -76,7 +76,24 @@ server
       content: products[id],
     });
   })
-  .patch((req, res) => {})
+  .patch((req, res) => {
+    const { id } = req.params;
+    const body = req.body;
+
+    const result = products[id];
+
+    if (!result) {
+      res.status(404).json({
+        message: "Producto no existe",
+      });
+    }
+    const updated_result = { ...products[id], ...body };
+    products[id] = updated_result;
+    res.status(201).json({
+      message: "Actualizado",
+      content: updated_result,
+    });
+  })
   .delete((req, res) => {
     const { id } = req.params;
     const resultado = products[id];
