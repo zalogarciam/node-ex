@@ -1,5 +1,6 @@
 import { Prisma } from "../prisma.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const registroUsuario = async (req, res) => {
   const data = req.body;
@@ -38,8 +39,18 @@ export const loginUsuario = async (req, res) => {
 
     const result = bcrypt.compareSync(password, user.password);
     if (result == true) {
+      const token = jwt.sign(
+        {
+          jti: user.id,
+          nombre: user.nombre,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
       return res.json({
-        content: "xx",
+        content: token,
       });
     } else {
       throw new Error("Credenciales incorrectas");
